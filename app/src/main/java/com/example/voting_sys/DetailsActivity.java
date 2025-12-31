@@ -49,38 +49,40 @@ public class DetailsActivity extends AppCompatActivity {
         btnVote.setOnClickListener(v -> vote());
     }
 
+    // أضف هذا المتغير في أعلى الكلاس
+    private int currentVotes = 0;
+
+    // داخل onCreate، في الجزء الذي تجلب فيه البيانات، خذ قيمة votesCount
     private void loadCandidateDetails() {
-        candidateRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        candidateRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    txtName.setText(snapshot.child("name").getValue(String.class));
-                    txtProgram.setText(snapshot.child("program").getValue(String.class));
+                    Candidate c = snapshot.getValue(Candidate.class);
+                    if (c != null) {
+                        txtName.setText(c.getName());
+                        txtProgram.setText(c.getProgram());
+                        currentVotes = c.getVotesCount(); // تخزين القيمة الحالية
+                    }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 
     private void vote() {
-        candidateRef.child("votesCount")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Integer votes = snapshot.getValue(Integer.class);
-                        if (votes == null) votes = 0;
+        String userCIN = getIntent().getStringExtra("userCIN");
 
-                        candidateRef.child("votesCount").setValue(votes + 1);
-                        Toast.makeText(DetailsActivity.this,
-                                "Vote enregistré ✅",
-                                Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
+        // تحديث عدد الأصوات في مسار المترشح
+        candidateRef.child("votesCount").setValue(currentVotes + 1)
+                .addOnSuccessListener(aVoid -> {
+                    // تسجيل الـ CIN في جدول مستقل لمنع تكرار التصويت
+                    DatabaseReference votesRef = FirebaseDatabase.getInstance().getReference("Votes");
+                    votesRef.child(userCIN).setValue(true);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {}
+                    Toast.makeText(this, "Vote enregistré avec succès !", Toast.LENGTH_SHORT).show();
+                    finish();
                 });
     }
 }

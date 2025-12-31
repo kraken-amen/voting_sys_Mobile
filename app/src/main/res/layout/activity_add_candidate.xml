@@ -1,0 +1,12 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText android:id="@+id/etNomCand" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Nom Complet"/>
+    <EditText android:id="@+id/etPresentation" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Présentation courte"/>
+    <EditText android:id="@+id/etProgram" android:layout_width="match_parent" android:layout_height="200dp" android:hint="Programme électoral" android:gravity="top"/>
+
+    <Button android:id="@+id/btnRegisterCandidate" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="S'inscrire comme Candidat" android:layout_marginTop="20dp"/>
+</LinearLayout>
