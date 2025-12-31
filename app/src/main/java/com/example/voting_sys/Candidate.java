@@ -9,6 +9,13 @@ public class Candidate {
     private int votesCount;
 
     public Candidate() {} // ❗ ضروري لـ Realtime DB
+    public Candidate(String id, String name, String presentation, String program, int votesCount) {
+        this.id = id;
+        this.name = name;
+        this.presentation = presentation;
+        this.program = program;
+        this.votesCount = votesCount;
+    }
 
     public String getId() { return id; }
     public String getName() { return name; }

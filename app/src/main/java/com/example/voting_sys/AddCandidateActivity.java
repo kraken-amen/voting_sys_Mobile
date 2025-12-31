@@ -1,5 +1,6 @@
 package com.example.voting_sys;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,18 +21,47 @@ public class AddCandidateActivity extends AppCompatActivity {
         Button btnSave = findViewById(R.id.btnRegisterCandidate);
 
         btnSave.setOnClickListener(v -> {
+            // 1. جلب النصوص من الحقول وتخزينها في متغيرات
+            String nom = etNom.getText().toString().trim();
+            String pres = etPres.getText().toString().trim();
+            String prog = etProg.getText().toString().trim();
+
+            // التأكد من أن الحقول ليست فارغة قبل الإرسال
+            if (nom.isEmpty() || pres.isEmpty() || prog.isEmpty()) {
+                Toast.makeText(this, "يرجى ملء جميع الحقول", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Candidate");
-            String id = ref.push().getKey(); // يعمل ID جديد أوتوماتيك
+            String id = ref.push().getKey();
 
-            // صنع Object جديد
-            Candidate newCandidate = new Candidate();
-            // ملاحظة: لازم تزيد Setters في كلاس Candidate أو تخليهم public
-            // هنا نفترض أنك زدتهم باش تبعث البيانات لـ Firebase
+            // 2. تمرير البيانات للكائن (Object)
+            // ملاحظة: افترضنا هنا أن لديك Constructor في كلاس Candidate يأخذ هذه القيم
+            Candidate newCandidate = new Candidate(id, nom, pres, prog, 0);
 
-            ref.child(id).setValue(newCandidate).addOnSuccessListener(aVoid -> {
-                Toast.makeText(this, "Candidat ajouté !", Toast.LENGTH_SHORT).show();
-                finish();
-            });
+            // 3. إرسال الكائن كاملاً إلى Firebase
+            if (id != null) {
+                ref.child(id).setValue(newCandidate).addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Candidat ajouté !", Toast.LENGTH_SHORT).show();
+                    finish();
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            }
+        });
+        // 1. تعريف الزر
+        Button btnHome = findViewById(R.id.btBackToHome);
+
+// 2. برمجة الضغطة
+        btnHome.setOnClickListener(v -> {
+            // الانتقال إلى الصفحة الرئيسية
+            Intent intent = new Intent(this, EntryActivity.class);
+
+            // هذه الأعلام (Flags) تضمن إغلاق كل الصفحات القديمة وفتح الصفحة الرئيسية كأنها جديدة
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            startActivity(intent);
+            finish(); // إغلاق الصفحة الحالية
         });
     }
 }

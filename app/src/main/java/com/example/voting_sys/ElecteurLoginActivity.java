@@ -29,6 +29,20 @@ public class ElecteurLoginActivity extends AppCompatActivity {
         btnVerifyCIN = findViewById(R.id.btnVerifyCIN);
 
         btnVerifyCIN.setOnClickListener(v -> verifyAndProceed());
+        // 1. تعريف الزر
+        Button btnHome = findViewById(R.id.bBackToHome);
+
+// 2. برمجة الضغطة
+        btnHome.setOnClickListener(v -> {
+            // الانتقال إلى الصفحة الرئيسية
+            Intent intent = new Intent(this, EntryActivity.class);
+
+            // هذه الأعلام (Flags) تضمن إغلاق كل الصفحات القديمة وفتح الصفحة الرئيسية كأنها جديدة
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            startActivity(intent);
+            finish(); // إغلاق الصفحة الحالية
+        });
     }
 
     private void verifyAndProceed() {

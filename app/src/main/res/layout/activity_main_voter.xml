@@ -2,7 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+
+    >
 
     <TextView
         android:id="@+id/title"
@@ -20,14 +22,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/title"
-        android:padding="8dp"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabResults"
-        android:layout_width="wrap_content"
+        android:layout_marginBottom="70dp"
+        android:clipToPadding="false"/>
+    <Button
+        android:id="@+id/btnBackToHome"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="RETOUR À L'ACCUEIL"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:backgroundTint="#34495E"
         android:layout_margin="16dp"
-        app:srcCompat="@android:drawable/ic_menu_search"/>
+        />
 </RelativeLayout>

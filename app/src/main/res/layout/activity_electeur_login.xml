@@ -25,5 +25,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Vérifier et Voter"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"/>
+    <Button
+        android:id="@+id/bBackToHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#34495E"
+        android:text="RETOUR À L'ACCUEIL" />
 </LinearLayout>

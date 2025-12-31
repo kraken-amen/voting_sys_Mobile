@@ -17,10 +17,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ElecteurLoginActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".DetailsActivity" />
-        <activity android:name=".AddCandidateActivity" />
+        <activity android:name=".ElecteurLoginActivity" android:exported="false"/>
+        <activity android:name=".MainActivity" android:exported="false"/>
+        <activity android:name=".DetailsActivity" android:exported="false"/>
+        <activity android:name=".AddCandidateActivity" android:exported="false"/>
+        <activity android:name=".ResultsActivity" android:exported="false" />
+
+
     </application>
 
 </manifest>

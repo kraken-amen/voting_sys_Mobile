@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,6 +50,20 @@ public class MainActivity extends AppCompatActivity {
         // 4. الـ Firebase
         candidateRef = FirebaseDatabase.getInstance().getReference("Candidate");
         loadCandidates();
+        // 1. تعريف الزر
+        Button btnHome = findViewById(R.id.btnBackToHome);
+
+// 2. برمجة الضغطة
+        btnHome.setOnClickListener(v -> {
+            // الانتقال إلى الصفحة الرئيسية
+            Intent intent = new Intent(this, EntryActivity.class);
+
+            // هذه الأعلام (Flags) تضمن إغلاق كل الصفحات القديمة وفتح الصفحة الرئيسية كأنها جديدة
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            startActivity(intent);
+            finish(); // إغلاق الصفحة الحالية
+        });
     }
     private void loadCandidates() {
         candidateRef.addValueEventListener(new ValueEventListener() {
