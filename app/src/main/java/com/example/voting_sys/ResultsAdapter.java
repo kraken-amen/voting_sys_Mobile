@@ -31,7 +31,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
         Candidate c = list.get(position);
         holder.tvName.setText(c.getName());
 
-        // حساب النسبة المئوية بأمان (لتجنب الكراش إذا كانت الأصوات 0)
+        // calcul %
         String percentage = "0%";
         if (totalVotes > 0) {
             int p = (c.getVotesCount() * 100) / totalVotes;
@@ -51,7 +51,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            // تأكد أن هذه الـ IDs تطابق الـ XML في الصورة image_83b26d.png
+
             tvName = itemView.findViewById(R.id.resNomCandidat);
             tvCount = itemView.findViewById(R.id.resCount);
         }

@@ -29,44 +29,40 @@ public class ElecteurLoginActivity extends AppCompatActivity {
         btnVerifyCIN = findViewById(R.id.btnVerifyCIN);
 
         btnVerifyCIN.setOnClickListener(v -> verifyAndProceed());
-        // 1. تعريف الزر
+
         Button btnHome = findViewById(R.id.bBackToHome);
 
-// 2. برمجة الضغطة
         btnHome.setOnClickListener(v -> {
-            // الانتقال إلى الصفحة الرئيسية
+
             Intent intent = new Intent(this, EntryActivity.class);
 
-            // هذه الأعلام (Flags) تضمن إغلاق كل الصفحات القديمة وفتح الصفحة الرئيسية كأنها جديدة
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
             startActivity(intent);
-            finish(); // إغلاق الصفحة الحالية
+            finish();
         });
     }
-
+    //controlle de saisir
     private void verifyAndProceed() {
         String cin = etCIN.getText().toString().trim();
 
-        // التثبت من طول الـ CIN (8 أرقام)
         if (cin.length() != 8) {
             etCIN.setError("Le CIN doit contenir 8 chiffres");
             return;
         }
 
-        // البحث في عقدة "Votes" للتأكد من عدم تكرار التصويت
         DatabaseReference voteCheck = FirebaseDatabase.getInstance().getReference("Votes").child(cin);
-
+        // cheack vote
         voteCheck.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
+            // snapshot ==envolope
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    // إذا الـ CIN موجود، يعني صوّت قبل
+
                     Toast.makeText(ElecteurLoginActivity.this,
                             "Désolé, ce numéro CIN a déjà participé au vote !",
                             Toast.LENGTH_LONG).show();
                 } else {
-                    // إذا موش موجود، يتعدى لصفحة القائمة ويبعث الـ CIN معاه
                     Intent intent = new Intent(ElecteurLoginActivity.this, MainActivity.class);
                     intent.putExtra("userCIN", cin);
                     startActivity(intent);

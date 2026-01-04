@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,43 +27,35 @@ public class MainActivity extends AppCompatActivity {
     private CandidateAdapter adapter;
     private List<Candidate> candidateList;
     private DatabaseReference candidateRef;
+    // 1. تعريف متغير لحفظ الـ CIN المستلم
+    private String userCIN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 1. هذي لازم تكون أول سطر
         setContentView(R.layout.activity_main_voter);
 
-        // 2. صلح الـ ID هنا (ثبت أنه موجود في الـ XML)
-        if (findViewById(R.id.main) != null) {
-            View mainView = findViewById(R.id.main);
-            // كود الـ EdgeToEdge إذا موجود
-        }
+        userCIN = getIntent().getStringExtra("userCIN");
 
-        // 3. ربط الـ RecyclerView
+        // recyclerView
         recyclerView = findViewById(R.id.recyclerViewCandidats);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         candidateList = new ArrayList<>();
 
-        // 4. الـ Firebase
+        // Firebase
         candidateRef = FirebaseDatabase.getInstance().getReference("Candidate");
         loadCandidates();
-        // 1. تعريف الزر
+
         Button btnHome = findViewById(R.id.btnBackToHome);
-
-// 2. برمجة الضغطة
         btnHome.setOnClickListener(v -> {
-            // الانتقال إلى الصفحة الرئيسية
             Intent intent = new Intent(this, EntryActivity.class);
-
-            // هذه الأعلام (Flags) تضمن إغلاق كل الصفحات القديمة وفتح الصفحة الرئيسية كأنها جديدة
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-
             startActivity(intent);
-            finish(); // إغلاق الصفحة الحالية
+            finish();
         });
     }
+
     private void loadCandidates() {
         candidateRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -73,9 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     try {
-                        // التحقق من أن البيانات ليست نصاً بسيطاً قبل التحويل
                         if (snap.getValue() instanceof String) {
-                            continue; // تخطي هذا السجل إذا كان نصاً
+                            continue;
                         }
 
                         Candidate c = snap.getValue(Candidate.class);
@@ -83,15 +73,18 @@ public class MainActivity extends AppCompatActivity {
                             candidateList.add(c);
                         }
                     } catch (Exception e) {
-                        // تسجيل الخطأ في Logcat دون إغلاق التطبيق
                         Log.e("FirebaseError", "Error parsing candidate: " + e.getMessage());
                     }
                 }
-                // تحديث الـ Adapter
+
+                // modification adapter
                 if (adapter == null) {
                     adapter = new CandidateAdapter(candidateList, candidate -> {
                         Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
                         intent.putExtra("candidateId", candidate.getId());
+                        // extra cin
+                        intent.putExtra("userCIN", userCIN);
+
                         startActivity(intent);
                     });
                     recyclerView.setAdapter(adapter);
@@ -102,9 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(MainActivity.this,
-                        error.getMessage(),
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

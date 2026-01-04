@@ -43,7 +43,7 @@ public class ResultsActivity extends AppCompatActivity {
                         totalVotes += c.getVotesCount();
                     }
                 }
-                // سنقوم بتمرير إجمالي الأصوات للـ Adapter لحساب النسبة
+
                 ResultsAdapter adapter = new ResultsAdapter(list, totalVotes);
                 rv.setAdapter(adapter);
             }

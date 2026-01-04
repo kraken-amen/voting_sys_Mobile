@@ -42,7 +42,6 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
         h.txtNom.setText(c.getName());
         h.txtDesc.setText(c.getPresentation());
 
-        // ✅ الزر هو اللي يفتح التفاصيل
         h.btnDetails.setOnClickListener(v -> listener.onCandidateClick(c));
     }
 

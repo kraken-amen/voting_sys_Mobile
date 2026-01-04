@@ -39,5 +39,12 @@
             android:layout_marginTop="30dp"
             android:text="VOTER MAINTENANT"
             android:backgroundTint="#27AE60"/>
+        <Button
+            android:id="@+id/btnBackEntr"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="RETOUR À L'ACCUEIL"
+            android:backgroundTint="#34495E"
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
 </ScrollView>

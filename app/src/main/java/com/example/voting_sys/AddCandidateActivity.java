@@ -21,25 +21,22 @@ public class AddCandidateActivity extends AppCompatActivity {
         Button btnSave = findViewById(R.id.btnRegisterCandidate);
 
         btnSave.setOnClickListener(v -> {
-            // 1. جلب النصوص من الحقول وتخزينها في متغيرات
+
             String nom = etNom.getText().toString().trim();
             String pres = etPres.getText().toString().trim();
             String prog = etProg.getText().toString().trim();
 
-            // التأكد من أن الحقول ليست فارغة قبل الإرسال
+            // verf
             if (nom.isEmpty() || pres.isEmpty() || prog.isEmpty()) {
-                Toast.makeText(this, "يرجى ملء جميع الحقول", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "remplir invalide", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Candidate");
             String id = ref.push().getKey();
 
-            // 2. تمرير البيانات للكائن (Object)
-            // ملاحظة: افترضنا هنا أن لديك Constructor في كلاس Candidate يأخذ هذه القيم
             Candidate newCandidate = new Candidate(id, nom, pres, prog, 0);
 
-            // 3. إرسال الكائن كاملاً إلى Firebase
             if (id != null) {
                 ref.child(id).setValue(newCandidate).addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Candidat ajouté !", Toast.LENGTH_SHORT).show();
@@ -49,19 +46,18 @@ public class AddCandidateActivity extends AppCompatActivity {
                 });
             }
         });
-        // 1. تعريف الزر
+
         Button btnHome = findViewById(R.id.btBackToHome);
 
-// 2. برمجة الضغطة
         btnHome.setOnClickListener(v -> {
-            // الانتقال إلى الصفحة الرئيسية
+
             Intent intent = new Intent(this, EntryActivity.class);
 
-            // هذه الأعلام (Flags) تضمن إغلاق كل الصفحات القديمة وفتح الصفحة الرئيسية كأنها جديدة
+            // close old layout
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
             startActivity(intent);
-            finish(); // إغلاق الصفحة الحالية
+            finish();
         });
     }
 }
