@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     private CandidateAdapter adapter;
     private List<Candidate> candidateList;
     private DatabaseReference candidateRef;
-    // 1. تعريف متغير لحفظ الـ CIN المستلم
     private String userCIN;
 
     @Override
